@@ -1,0 +1,65 @@
+# Complete deployment manifest for mock hand counter
+# This file contains both ConfigMap and Pod definitions
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hand-counter-config
+  namespace: default
+  labels:
+    app: hand-counter
+    component: config
+data:
+  config.json: |
+    {
+      "mqtt": {
+        "broker_host": "127.0.0.1",
+        "broker_port": 1883,
+        "topic": "sensor/handsraised/update/json",
+        "timeout": 60
+      },
+      "simulation": {
+        "update_interval": 2.0,
+        "max_count": 3
+      }
+    }
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mock-hand-counter
+  namespace: default
+spec:
+  restartPolicy: Always
+  containers:
+  - name: mock-hand-counter
+    image: vxav/mock-hand-counter:0.1
+    imagePullPolicy: IfNotPresent
+    command: ["python", "mock-hand-counter.py"]
+    workingDir: /app
+    env:
+    - name: PYTHONUNBUFFERED
+      value: "1"
+    - name: CONFIG_PATH
+      value: "/app/config/config.json"
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "50m"
+      limits:
+        memory: "128Mi"
+        cpu: "100m"
+    volumeMounts:
+    - name: config-volume
+      mountPath: /app/config
+      readOnly: true
+  volumes:
+  - name: config-volume
+    configMap:
+      name: hand-counter-config
+      items:
+      - key: config.json
+        path: config.json
+  nodeSelector:
+    node-role.kubernetes.io/edge: ""

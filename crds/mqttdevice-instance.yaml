@@ -1,0 +1,43 @@
+apiVersion: devices.kubeedge.io/v1beta1
+kind: Device
+metadata:
+  name: hands
+  namespace: default
+spec:
+  deviceModelRef:
+    name: handsraised-model
+  nodeName: kubeedge-device
+  properties:
+    - name: handsraised
+      collectCycle: 5000
+      reportCycle: 5000
+      reportToCloud: true
+      desired:
+        value: "30"
+      # pushMethod:
+      #   mqtt:
+      #     address: tcp://127.0.0.1:1883
+      #     topic: handsraised/update/json
+      #     qos: 0
+      #     retained: false
+      visitors:
+        protocolName: mqtt
+        configData:
+          clientID: handsraised_client
+          topic: sensor/handsraised/getsinglevalue/json
+          qos: 1
+          retain: false
+          username: ""
+          password: ""
+          cleanSession: true
+          keepAlive: 60
+  protocol:
+    protocolName: mqtt
+    configData:
+      clientID: "handsraised-client"
+      brokerURL: "tcp://127.0.0.1:1883"
+      topic: "sensor/handsraised/deviceinfo/json"
+      message: '{"handsraised": "30", "status": "online"}'
+      username: ""
+      password: ""
+      connectionTTL: 30000000000

@@ -1,0 +1,15 @@
+apiVersion: devices.kubeedge.io/v1beta1
+kind: DeviceModel
+metadata:
+  name: handsraised-model
+  namespace: default
+spec:
+  properties:
+    - name: handsraised
+      description: Hands raised model
+      type: INT
+      accessMode: ReadOnly
+      maximum: "100"
+      minimum: "1"
+      unit: "Hands"
+  protocol: mqtt

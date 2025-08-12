@@ -17,7 +17,7 @@ RUN pip install --no-cache-dir \
 WORKDIR /app
 
 # Copy application code
-COPY raise_hand.py /app/
+COPY advanced-multi-person-counter.py /app/
 
 # Run the Python script
-CMD ["python", "raise_hand.py"]
+CMD ["python", "advanced-multi-person-counter.py"]
