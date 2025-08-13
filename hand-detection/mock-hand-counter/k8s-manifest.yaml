@@ -34,7 +34,7 @@ spec:
   restartPolicy: Always
   containers:
   - name: mock-hand-counter
-    image: vxav/mock-hand-counter:0.4
+    image: vxav/mock-hand-counter:0.1
     imagePullPolicy: IfNotPresent
     command: ["python", "mock-hand-counter.py"]
     workingDir: /app
