@@ -14,7 +14,7 @@ data:
   config.json: |
     {
       "mqtt": {
-        "broker_host": "127.0.0.1",
+        "broker_host": "10.201.24.12",
         "broker_port": 1883,
         "topic": "sensor/handsraised/update/json",
         "timeout": 60
@@ -34,7 +34,7 @@ spec:
   restartPolicy: Always
   containers:
   - name: mock-hand-counter
-    image: vxav/mock-hand-counter:0.1
+    image: vxav/mock-hand-counter:0.4
     imagePullPolicy: IfNotPresent
     command: ["python", "mock-hand-counter.py"]
     workingDir: /app

@@ -64,3 +64,9 @@ watch "kubectl get device hands -n default -ojsonpath='{.status.twins[0].reporte
 ### 5. Mediapipe powered raised hand detection
 
 WIP
+
+Run the script on your machine and make sure you have connectivity to the MQTT broker (edge node).
+
+```sh
+python3 ./hand-detection/advanced-multi-person-counter/advanced-multi-person-counter.py
+```

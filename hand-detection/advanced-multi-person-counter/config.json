@@ -1,0 +1,9 @@
+{
+  "mqtt": {
+    "broker_host": "10.201.24.12",
+    "broker_port": 1883,
+    "topic": "sensor/handsraised/update/json",
+    "timeout": 60
+  },
+  "visual_display": false
+}
