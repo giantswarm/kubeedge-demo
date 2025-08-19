@@ -12,7 +12,7 @@ data:
       version: v1.13.0
       api_version: v1.0.0
       protocol: mqtt
-      address: 127.0.0.1
+      address: 192.168.1.54
       edgecore_sock: /etc/kubeedge/dmi.sock
       http_port: ""
 ---
@@ -27,6 +27,10 @@ spec:
       app: mqtt-mapper
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/metrics"
       labels:
         app: mqtt-mapper
     spec:
@@ -36,7 +40,7 @@ spec:
       restartPolicy: Always
       containers:
       - name: mqtt-mapper
-        image: vxav/mqttmapper:0.3
+        image: vxav/mqttmapper:0.5-arm64
         imagePullPolicy: IfNotPresent
         command: ["./main"]
         args: ["--config-file", "/config/config.yaml", "--v", "2"]

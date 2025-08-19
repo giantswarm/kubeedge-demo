@@ -6,20 +6,14 @@ metadata:
 spec:
   deviceModelRef:
     name: handsraised-model
-  nodeName: kubeedge-device
+  nodeName: rpi-kubeedge
   properties:
     - name: handsraised
-      collectCycle: 5000
-      reportCycle: 5000
+      collectCycle: 1000
+      reportCycle: 1000
       reportToCloud: true
       desired:
         value: "30"
-      # pushMethod:
-      #   mqtt:
-      #     address: tcp://127.0.0.1:1883
-      #     topic: handsraised/update/json
-      #     qos: 0
-      #     retained: false
       visitors:
         protocolName: mqtt
         configData:
@@ -37,7 +31,7 @@ spec:
       clientID: "handsraised-client"
       brokerURL: "tcp://127.0.0.1:1883"
       topic: "sensor/handsraised/deviceinfo/json"
-      message: '{"handsraised": "30", "status": "online"}'
+      message: '{"handsraised": "0", "status": "online"}'
       username: ""
       password: ""
       connectionTTL: 30000000000

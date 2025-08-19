@@ -1,0 +1,37 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+  - role: control-plane
+    kubeadmConfigPatches:
+      - |
+        kind: ClusterConfiguration
+        apiServer:
+          certSANs:
+            - "192.168.1.44"  # Add your LAN IP here
+    extraPortMappings:
+    - containerPort: 10000
+      hostPort: 10000
+      listenAddress: "0.0.0.0"
+      protocol: TCP
+    - containerPort: 10001
+      hostPort: 10001
+      listenAddress: "0.0.0.0"
+      protocol: TCP
+    - containerPort: 10002
+      hostPort: 10002
+      listenAddress: "0.0.0.0"
+      protocol: TCP
+    - containerPort: 10003
+      hostPort: 10003
+      listenAddress: "0.0.0.0"
+      protocol: TCP
+    - containerPort: 10004
+      hostPort: 10004
+      listenAddress: "0.0.0.0"
+      protocol: TCP
+    - containerPort: 6443
+      hostPort: 6443
+      listenAddress: "0.0.0.0"
+      protocol: TCP
+networking:
+  disableDefaultCNI: true

@@ -15,6 +15,17 @@ This repo contains:
 - MQTT broker accessible from edge nodes
 - kubectl access to the Kubernetes cluster
 
+### 0. Install monitoring stack
+
+```sh
+kubectl create namespace monitoring
+
+helm install prometheus oci://ghcr.io/prometheus-community/charts/prometheus -f ./infra/prometheus-helm-values.yaml -n monitoring
+
+helm repo add grafana https://grafana.github.io/helm-charts
+helm install grafana grafana/grafana -f ./infra/grafana-helm-values.yaml -n monitoring
+```
+
 ### 1. Install the MQTT mapper
 
 The mqtt mapper subscribes to an MQTT topic and updates the kubeedge resources when a new value is published.
@@ -47,7 +58,7 @@ kubectl get device hands -n default -ojsonpath='{.status.twins[0].reported.value
 13
 ```
 
-### 4. Mock hand counter app
+### 4a. Mock hand counter app
 
 This app will cycle through 0, 1, 2, 3 and publish to MQTT accordingly.
 
@@ -61,12 +72,10 @@ You can then watch the value of the kubeedge device CR change in real time.
 watch "kubectl get device hands -n default -ojsonpath='{.status.twins[0].reported.value}'"
 ```
 
-### 5. Mediapipe powered raised hand detection
+### 4b. Mediapipe powered raised hand detection
 
-WIP
-
-Run the script on your machine and make sure you have connectivity to the MQTT broker (edge node).
+A camera must be connected to the kubeedge node and mapped to `/dev/video0`.
 
 ```sh
-python3 ./hand-detection/advanced-multi-person-counter/advanced-multi-person-counter.py
+kubectl apply -f ./hand-detection/advanced-multi-person-counter/k8s-manifest.yaml
 ```
