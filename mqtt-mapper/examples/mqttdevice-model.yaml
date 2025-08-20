@@ -1,0 +1,15 @@
+apiVersion: devices.kubeedge.io/v1beta1
+kind: DeviceModel
+metadata:
+  name: temperature-model
+  namespace: default
+spec:
+  properties:
+    - name: temperature
+      description: temperature sensor model
+      type: INT
+      accessMode: ReadOnly
+      maximum: "100"
+      minimum: "1"
+      unit: "Celsius"
+  protocol: mqtt

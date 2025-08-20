@@ -31,7 +31,7 @@ helm install grafana grafana/grafana -f ./infra/grafana-helm-values.yaml -n moni
 The mqtt mapper subscribes to an MQTT topic and updates the kubeedge resources when a new value is published.
 
 ```sh
-kubectl apply -f ./mqtt-mapper/daemonset-cm.yaml
+kubectl apply -f ./mqtt-mapper/k8s-manifest.yaml
 ```
 
 ### 2. Create the `deviceModel` and `device` resources
