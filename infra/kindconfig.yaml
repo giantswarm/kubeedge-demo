@@ -7,7 +7,7 @@ nodes:
         kind: ClusterConfiguration
         apiServer:
           certSANs:
-            - "192.168.1.44"  # Add your LAN IP here
+            - "192.168.1.200"  # Add your LAN IP here
     extraPortMappings:
     - containerPort: 10000
       hostPort: 10000
