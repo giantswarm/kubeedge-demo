@@ -34,7 +34,7 @@ spec:
   restartPolicy: Always
   initContainers:
   - image: alpine:3.20
-    imagePullPolicy: Always
+    imagePullPolicy: IfNotPresent
     command: ["/bin/sh", "-c"]
     args:
       - |
