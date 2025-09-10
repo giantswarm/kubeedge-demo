@@ -33,13 +33,12 @@ metadata:
 spec:
   restartPolicy: Always
   initContainers:
-  - image: alpine:3.20
+  - image: quay.io/giantswarm/kubeedge-demo-alpine:3.20-gettext
     imagePullPolicy: IfNotPresent
     command: ["/bin/sh", "-c"]
     args:
       - |
         set -e
-        apk add --no-cache gettext
         echo "Resolving config..."
         envsubst < /app/config/config.json > /app/config-runtime/config.json
         echo "Config resolved:"
