@@ -39,12 +39,11 @@ spec:
       hostNetwork: true
       restartPolicy: Always
       initContainers:
-      - image: alpine:3.20
+      - image: quay.io/giantswarm/kubeedge-demo-alpine:3.20-gettext
         command: ["/bin/sh", "-c"]
         args:
           - |
             set -e
-            apk add --no-cache gettext
             echo "Resolving config..."
             envsubst < /config/config.yaml > /config-runtime/config.yaml
             echo "Config resolved:"
