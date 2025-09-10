@@ -19,6 +19,10 @@ data:
         "topic": "sensor/handsraised/update/json",
         "timeout": 60
       },
+      "resolution": {
+        "width": 1920,
+        "height": 1080
+      },
       "simulation": {
         "update_interval": 2.0,
         "max_count": 3
@@ -58,7 +62,7 @@ spec:
   - name: hand-counter
     securityContext:
       privileged: true
-    image: vxav/hand-counter:0.1.1-arm64
+    image: quay.io/giantswarm/kubeedge-hand-counter:0.2.1-arm64
     imagePullPolicy: IfNotPresent
     command: ["python", "advanced-multi-person-counter.py"]
     workingDir: /app
