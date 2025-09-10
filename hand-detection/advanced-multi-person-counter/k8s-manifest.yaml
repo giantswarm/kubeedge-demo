@@ -33,7 +33,7 @@ metadata:
 spec:
   restartPolicy: Always
   initContainers:
-  - image: alpine:3.20
+  - image: alpine:3.22
     imagePullPolicy: Always
     command: ["/bin/sh", "-c"]
     args:

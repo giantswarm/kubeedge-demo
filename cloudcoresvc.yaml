@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    k8s-app: kubeedge
+    kubeedge: cloudcore
+  name: cloudcore
+  namespace: kubeedge
+spec:
+  allocateLoadBalancerNodePorts: true
+  clusterIP: 172.31.94.166
+  clusterIPs:
+  - 172.31.94.166
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: cloudhub
+    nodePort: 30000
+    port: 10000
+  - name: cloudhub-quic
+    nodePort: 30001
+    port: 10001
+  - name: cloudhub-https
+    nodePort: 30002
+    port: 10002
+  - name: cloudstream
+    nodePort: 30003
+    port: 10003
+  - name: tunnelport
+    nodePort: 30004
+    port: 10004
+  selector:
+    k8s-app: kubeedge
+    kubeedge: cloudcore
+  type: LoadBalancer
