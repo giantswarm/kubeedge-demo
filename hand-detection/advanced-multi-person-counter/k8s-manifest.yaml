@@ -29,72 +29,80 @@ data:
       }
     }
 ---
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
+  labels:
+    app: hand-counter
   name: hand-counter
   namespace: default
 spec:
-  restartPolicy: Always
-  initContainers:
-  - image: quay.io/giantswarm/kubeedge-demo-alpine:3.20-gettext
-    imagePullPolicy: IfNotPresent
-    command: ["/bin/sh", "-c"]
-    args:
-      - |
-        set -e
-        echo "Resolving config..."
-        envsubst < /app/config/config.json > /app/config-runtime/config.json
-        echo "Config resolved:"
-        cat /app/config-runtime/config.json
-    name: envsubst
-    env:
-    - name: NODE_IP
-      valueFrom:
-        fieldRef:
-          fieldPath: status.hostIP
-    volumeMounts:
-    - name: config-runtime
-      mountPath: /app/config-runtime
-    - name: config-volume
-      mountPath: /app/config
-  containers:
-  - name: hand-counter
-    securityContext:
-      privileged: true
-    image: quay.io/giantswarm/kubeedge-hand-counter:0.2.1-arm64
-    imagePullPolicy: IfNotPresent
-    command: ["python", "advanced-multi-person-counter.py"]
-    workingDir: /app
-    env:
-    - name: PYTHONUNBUFFERED
-      value: "1"
-    - name: CONFIG_PATH
-      value: "/app/config-runtime/config.json"
-    resources:
-      requests:
-        memory: "64Mi"
-        cpu: "50m"
-      # limits:
-      #   memory: "4Gi"
-      #   cpu: "100m"
-    volumeMounts:
-    - name: config-runtime
-      mountPath: /app/config-runtime
-    - name: camera-volume0
-      mountPath: /dev/video0
-      readOnly: true
-  volumes:
-  - name: config-runtime
-    emptyDir: {}
-  - name: config-volume
-    configMap:
-      name: hand-counter-config
-      items:
-      - key: config.json
-        path: config.json
-  - name: camera-volume0
-    hostPath:
-      path: /dev/video0
-  nodeSelector:
-    node-role.kubernetes.io/edge: ""
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hand-counter
+  template:
+    metadata:
+      labels:
+        app: hand-counter
+    spec:
+      restartPolicy: Always
+      initContainers:
+      - image: quay.io/giantswarm/kubeedge-demo-alpine:3.20-gettext
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            set -e
+            echo "Resolving config..."
+            envsubst < /app/config/config.json > /app/config-runtime/config.json
+            echo "Config resolved:"
+            cat /app/config-runtime/config.json
+        name: envsubst
+        env:
+        - name: NODE_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        volumeMounts:
+        - name: config-runtime
+          mountPath: /app/config-runtime
+        - name: config-volume
+          mountPath: /app/config
+      containers:
+      - name: hand-counter
+        securityContext:
+          privileged: true
+        image: quay.io/giantswarm/kubeedge-hand-counter:0.2.1-arm64
+        imagePullPolicy: IfNotPresent
+        command: ["python", "advanced-multi-person-counter.py"]
+        workingDir: /app
+        env:
+        - name: PYTHONUNBUFFERED
+          value: "1"
+        - name: CONFIG_PATH
+          value: "/app/config-runtime/config.json"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+        volumeMounts:
+        - name: config-runtime
+          mountPath: /app/config-runtime
+        - name: camera-volume0
+          mountPath: /dev/video1
+          readOnly: true
+      volumes:
+      - name: config-runtime
+        emptyDir: {}
+      - name: config-volume
+        configMap:
+          name: hand-counter-config
+          items:
+          - key: config.json
+            path: config.json
+      - name: camera-volume0
+        hostPath:
+          path: /dev/video1
+      nodeSelector:
+        node-role.kubernetes.io/edge: ""
