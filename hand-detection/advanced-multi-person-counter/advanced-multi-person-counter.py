@@ -225,14 +225,16 @@ class HandCountSmoother:
         # Otherwise return current count
         return current_count
 
+# Load configuration
+config = load_config()
+
 # For webcam input with optimized settings:
 cap = cv2.VideoCapture(0)
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, config['resolution']['width'])
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, config['resolution']['height'])
 cap.set(cv2.CAP_PROP_FPS, 30)
 
-# Load config, then initialize MQTT and set visual display (default: False)
-config = load_config()
+# Initialize MQTT and set visual display (default: False)
 show_visual = config.get("visual_display", False)
 mqtt_publisher = MQTTPublisher(config)
 
