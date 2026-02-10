@@ -20,7 +20,7 @@ This repo contains:
 ```sh
 kubectl create namespace monitoring
 
-helm install prometheus oci://ghcr.io/prometheus-community/charts/prometheus -f ./infra/prometheus-helm-values.yaml -n monitoring
+helm install prometheus oci://ghcr.io/prometheus-community/charts/prometheus -f ./infra/prometheus-helm-values.yaml -n monitoring --version 27.50.1
 
 helm repo add grafana https://grafana.github.io/helm-charts
 helm install grafana grafana/grafana -f ./infra/grafana-helm-values.yaml -n monitoring
